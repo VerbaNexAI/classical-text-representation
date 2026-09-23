@@ -84,15 +84,20 @@ class TextProcessing(object):
     @staticmethod
     def transformer(text: str, stopwords: bool = False) -> str:
         try:
-            text_out = TextProcessing.proper_encoding(text)
+            # FIX Fase 0: el reemplazo de emoji debe ir ANTES de proper_encoding,
+            # porque proper_encoding() usa encode('ascii','ignore') y destruye
+            # los emojis (caracteres no-ASCII) antes de que este regex los detecte.
+            text_out = re.sub("[\U0001f000-\U000e007f]", '[EMOJI]', text)
+            text_out = TextProcessing.proper_encoding(text_out)
             text_out = text_out.lower()
-            text_out = re.sub("[\U0001f000-\U000e007f]", '[EMOJI]', text_out)
             text_out = re.sub(
                 r'(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+'
                 r'|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))',
                 '[URL]', text_out)
             text_out = re.sub("@([A-Za-z0-9_]{1,40})", '[MENTION]', text_out)
-            text_out = re.sub("#([A-Za-z0-9_]{1,40})", '[HASTAG]', text_out)
+            # FIX Fase 0: typo corregido (era [HASTAG], no coincidía con 'hashtag'
+            # buscado en feature_extraction.get_features_lexical)
+            text_out = re.sub("#([A-Za-z0-9_]{1,40})", '[HASHTAG]', text_out)
             text_out = TextProcessing.remove_patterns(text_out)
             # text_out = TextAnalysis.lemmatization(text_out) if lemmatizer else text_out
             text_out = TextProcessing.stopwords(text_out) if stopwords else text_out
