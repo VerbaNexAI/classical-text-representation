@@ -126,3 +126,17 @@ lexical_en = {'first_person_singular': ['i', 'me', 'my', 'mine', 'myself'],
                        'grievance', 'gripe', 'irritant', 'malevolence', 'malignity', 'nuisance', 'objection', 'odium',
                        'rankling', 'repugnance', 'repulsion','revulsion', 'scorn', 'spite', 'trouble', 'black beast',
                        'bête noire', 'ill will', 'mislike', 'nasty look', 'no love lost']}
+# --- Fase 1: lexico de polaridad y marcadores de negacion (nuevo) ---
+polaridad_es = {
+    'positivo': ['alegre', 'bueno', 'buen', 'buenisimo', 'excelente', 'feliz', 'genial', 'encanta',
+                 'encantar', 'gusta', 'gustar', 'amor', 'amar', 'perfecto', 'hermoso', 'bonito',
+                 'divertido', 'increible', 'maravilloso', 'positivo', 'contento', 'orgulloso',
+                 'suerte', 'gracias', 'mejor', 'lindo', 'grande', 'fuerte'],
+    'negativo': ['malo', 'mal', 'pesimo', 'horrible', 'triste', 'odio', 'odiar', 'asco', 'feo',
+                 'terrible', 'peor', 'dolor', 'miedo', 'lastima', 'lamentablemente', 'penuria',
+                 'negativo', 'preocupado', 'decepcion', 'decepcionado', 'aburrido', 'debil',
+                 'dificil', 'muerto', 'enfermo', 'pobre']
+}
+
+negacion_es = ['no', 'nunca', 'jamas', 'tampoco', 'ni', 'sin']
+fin_alcance_negacion_es = ['pero', 'aunque', 'sino', 'y', 'o', 'porque', 'ademas']
