@@ -46,7 +46,19 @@ lexical_es = {'first_person_singular': ['yo', 'mio', 'mi'],
                        'execración', 'escarcha', 'agravio', 'queja', 'irritante', 'malevolencia', 'malignidad',
                        'molestia', 'objeción', 'odio', 'irritación', 'repugnancia', 'repulsión', 'repulsión',
                        'desprecio', 'despecho', 'problemas', 'bestia negra', 'mala voluntad', 'desagradable',
-                       'mirada desagradable', 'ningún amor perdido']}
+                       'mirada desagradable', 'ningún amor perdido'],
+              # --- Caracteristicas nuevas (Sebastian Sarmiento) ---
+              # emoji_pol: signo de polaridad del emoji segun Emoji Sentiment Ranking (Kralj Novak et al., 2015)
+              'emoji_pos': ['😂', '🤣', '😀', '😃', '😄', '😁', '😊', '😍', '😘', '😙', '😜', '😉', '😎', '🥰',
+                            '❤', '♥', '💚', '💙', '💜', '❣', '💞', '💕', '👍', '👌', '👏', '🙌', '🎉', '✨',
+                            '🌟', '💪', '🙏', '💃'],
+              'emoji_neg': ['😢', '😭', '😞', '😔', '😒', '😩', '😫', '😠', '😡', '🤬', '💔', '👎', '😱', '😤',
+                            '😣', '😖', '🙄'],
+              # laugh_count: risas escritas que no siguen el patron ja/je/ji
+              'laugh': ['xd', 'lol', 'lmao', 'jsjs', 'jsjsjs', '🤣'],
+              # lex_pol_neg: marcas que invierten la polaridad y conjunciones que cierran su alcance
+              'negation': ['no', 'nunca', 'jamás', 'jamas', 'tampoco', 'ni', 'nada', 'nadie', 'sin'],
+              'adversative': ['pero', 'aunque', 'sino']}
 
 lexical_en = {'first_person_singular': ['i', 'me', 'my', 'mine', 'myself'],
               'second_person_singular': ['you', 'your', 'yours', 'yourself'],

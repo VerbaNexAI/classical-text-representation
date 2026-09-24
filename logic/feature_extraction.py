@@ -7,6 +7,24 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from logic.text_processing import TextProcessing
 from logic.utils import Utils
 from logic.lexical_features import lexical_es, lexical_en
+from pathlib import Path
+import xml.etree.ElementTree as ET
+
+SENTICON_PATH = Path(__file__).resolve().parent.parent / 'data' / 'lexicons' / 'senticon.es.xml'
+EMOJI_RE = re.compile('[\U0001F000-\U0001FAFF☀-➿]')
+LAUGH_RE = re.compile(r'(?:j[aeiou]){2,}j?')
+PUNCT_END = {'.', ',', ';', ':', '!', '?', '¡', '¿'}
+NEW_FEATURE_NAMES = ['emoji_count', 'emoji_pol', 'laugh_count', 'laugh_len', 'lex_pol_neg']
+
+
+def load_senticon(path=SENTICON_PATH):
+    """Diccionario lema -> polaridad en [-1, 1] de ML-SentiCon (solo lemas de una palabra)."""
+    senticon = dict()
+    for lemma in ET.parse(path).getroot().iter('lemma'):
+        word = lemma.text.strip().lower()
+        if ' ' not in word and '_' not in word:
+            senticon.setdefault(word, float(lemma.get('pol')))
+    return senticon
 
 
 class FeatureExtraction(BaseEstimator, TransformerMixin):
@@ -159,3 +177,57 @@ class FeatureExtraction(BaseEstimator, TransformerMixin):
             Utils.standard_error(sys.exc_info())
             print('Error weighted_position: {0}'.format(e))
         return result
+
+    def get_features_nuevas(self, message):
+        """emoji_pol, laugh_count y lex_pol_neg sobre el texto CRUDO del tweet.
+
+        Se calculan antes de transformer() porque ese preprocesamiento borra los emojis y las
+        tildes (proper_encoding hace NFD + ascii), y con ellos la informacion que miden.
+        Devuelve un vector en el orden de NEW_FEATURE_NAMES.
+        """
+        result = None
+        try:
+            tokens_text = [t.lower() for t in TweetTokenizer().tokenize(message)]
+            vector = dict()
+            vector['emoji_count'], vector['emoji_pol'] = self.emoji_pol(message, self.lexical)
+            vector['laugh_count'], vector['laugh_len'] = self.laugh_count(tokens_text, self.lexical)
+            if not hasattr(self, 'senticon'):
+                self.senticon = load_senticon()
+            vector['lex_pol_neg'] = self.lex_pol_neg(tokens_text, self.lexical, self.senticon)
+            result = np.array(list(vector.values()), dtype=np.float64)
+        except Exception as e:
+            Utils.standard_error(sys.exc_info())
+            print('Error get_features_nuevas: {0}'.format(e))
+        return result
+
+    @staticmethod
+    def emoji_pol(message, lexical):
+        """Numero de emojis y suma de su polaridad (+1 positivo, -1 negativo, 0 neutro)."""
+        emojis = EMOJI_RE.findall(message)
+        polarity = sum(1 if e in lexical['emoji_pos'] else -1 if e in lexical['emoji_neg'] else 0 for e in emojis)
+        return float(len(emojis)), float(polarity)
+
+    @staticmethod
+    def laugh_count(tokens_text, lexical):
+        """Numero de risas y longitud de la risa mas larga (jajajaja pesa mas que jaja)."""
+        laughs = [t for t in tokens_text
+                  if LAUGH_RE.fullmatch(t) or re.sub(r'(.)\1+', r'\1', t) in lexical['laugh']]
+        return float(len(laughs)), float(max((len(t) for t in laughs), default=0))
+
+    @staticmethod
+    def lex_pol_neg(tokens_text, lexical, senticon):
+        """Polaridad media ML-SentiCon con la negacion aplicada.
+
+        Una marca de negacion invierte el signo de las palabras siguientes hasta un signo de
+        puntuacion o una conjuncion adversativa ("no es bueno" -> negativo).
+        """
+        total, n_polar, negated = 0.0, 0, False
+        for token in tokens_text:
+            if token in lexical['negation']:
+                negated = True
+            elif token in PUNCT_END or token in lexical['adversative']:
+                negated = False
+            elif token in senticon:
+                total += -senticon[token] if negated else senticon[token]
+                n_polar += 1
+        return round(total / n_polar, 4) if n_polar > 0 else 0.0
