@@ -60,6 +60,30 @@ lexical_es = {'first_person_singular': ['yo', 'mio', 'mi'],
               'negation': ['no', 'nunca', 'jamás', 'jamas', 'tampoco', 'ni', 'nada', 'nadie', 'sin'],
               'adversative': ['pero', 'aunque', 'sino']}
 
+
+           # --- Caracteristicas nuevas (aporte Zuly González) ---
+
+              # Expresiones de duda o incertidumbre
+              'doubt_expression': [
+                  'no sé', 'no se', 'tal vez', 'quizás', 'quizas', 'de pronto',
+                  'puede que', 'puede ser', 'creo que', 'me parece', 'a lo mejor',
+                  'probablemente', 'posiblemente', 'no estoy seguro', 'no estoy segura'
+              ],
+
+              # Intensificadores
+              'intensifier': [
+                  'muy', 'super', 'súper', 'demasiado', 'muchísimo', 'muchísima',
+                  'muchísimos', 'muchísimas', 'bastante', 'realmente', 'totalmente',
+                  'completamente', 'extremadamente'
+              ],
+
+              # Regionalismos y expresiones coloquiales
+              'regionalism': [
+                  'parce', 'parcero', 'parcera', 'sumercé', 'bacano', 'bacana',
+                  'berraco', 'berraca', 'paila', 'quiubo', 'hágale'
+              ]}
+
+
 lexical_en = {'first_person_singular': ['i', 'me', 'my', 'mine', 'myself'],
               'second_person_singular': ['you', 'your', 'yours', 'yourself'],
               'third_person_singular': ['he', 'him', 'his', 'himself', 'she', 'her', 'hers', 'herself', 'it', 'its',
