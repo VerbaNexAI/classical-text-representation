@@ -1,5 +1,6 @@
 import re
 import sys
+import unicodedata
 from nltk import TweetTokenizer
 from scipy.stats import kurtosis, skew
 import numpy as np
@@ -14,7 +15,16 @@ SENTICON_PATH = Path(__file__).resolve().parent.parent / 'data' / 'lexicons' / '
 EMOJI_RE = re.compile('[\U0001F000-\U0001FAFF☀-➿]')
 LAUGH_RE = re.compile(r'(?:j[aeiou]){2,}j?')
 PUNCT_END = {'.', ',', ';', ':', '!', '?', '¡', '¿'}
-NEW_FEATURE_NAMES = ['emoji_count', 'emoji_pol', 'laugh_count', 'laugh_len', 'lex_pol_neg']
+NEW_FEATURE_NAMES = [
+    'emoji_count', 'emoji_pol',
+    'laugh_count', 'laugh_len',
+    'lex_pol_neg',
+    'doubt_count',
+    'regionalism_count',
+    'intensifier_count',
+    'social_pos',
+    'groserias'
+]
 
 
 def load_senticon(path=SENTICON_PATH):
@@ -194,6 +204,11 @@ class FeatureExtraction(BaseEstimator, TransformerMixin):
             if not hasattr(self, 'senticon'):
                 self.senticon = load_senticon()
             vector['lex_pol_neg'] = self.lex_pol_neg(tokens_text, self.lexical, self.senticon)
+            vector['doubt_count'] = self.doubt_count(message, self.lexical)
+            vector['regionalism_count'] = self.lexical_word_count(message, self.lexical.get('regionalisms', []))
+            vector['intensifier_count'] = self.lexical_word_count(message, self.lexical.get('intensifiers', []))
+            vector['social_pos'] = self.lexical_word_count(message, self.lexical.get('social_pos', []))
+            vector['groserias'] = self.lexical_word_count(message, self.lexical.get('groserias', []))
             result = np.array(list(vector.values()), dtype=np.float64)
         except Exception as e:
             Utils.standard_error(sys.exc_info())
@@ -231,3 +246,32 @@ class FeatureExtraction(BaseEstimator, TransformerMixin):
                 total += -senticon[token] if negated else senticon[token]
                 n_polar += 1
         return round(total / n_polar, 4) if n_polar > 0 else 0.0
+
+    @staticmethod
+    def _normalize_text_for_match(text):
+        text = unicodedata.normalize('NFD', str(text))
+        text = ''.join(ch for ch in text if unicodedata.category(ch) != 'Mn')
+        text = text.lower()
+        text = re.sub(r'\s+', ' ', text).strip()
+        return text
+
+    @staticmethod
+    def lexical_word_count(message, lexical_words):
+        """Cuenta ocurrencias por token, robusto a tildes y mayusculas."""
+        normalized = FeatureExtraction._normalize_text_for_match(message)
+        tokens = re.findall(r'\b\w+\b', normalized, flags=re.UNICODE)
+        lexicon = set(FeatureExtraction._normalize_text_for_match(w) for w in lexical_words)
+        return float(sum(1 for t in tokens if t in lexicon))
+
+    @staticmethod
+    def doubt_count(message, lexical):
+        """Cuenta frases de duda/hedges en texto crudo."""
+        normalized = FeatureExtraction._normalize_text_for_match(message)
+        total = 0
+        for phrase in lexical.get('doubt_phrases', []):
+            p = FeatureExtraction._normalize_text_for_match(phrase)
+            if not p:
+                continue
+            pattern = r'(?<!\w)' + re.escape(p).replace(r'\ ', r'\s+') + r'(?!\w)'
+            total += len(re.findall(pattern, normalized, flags=re.UNICODE))
+        return float(total)

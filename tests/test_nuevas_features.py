@@ -19,8 +19,8 @@ def features(tweetid):
     return dict(zip(NEW_FEATURE_NAMES, FE.get_features_nuevas(TRAIN.loc[tweetid, 'content'])))
 
 
-def test_vector_tiene_las_5_columnas():
-    assert FE.get_features_nuevas('hola').shape == (5,)
+def test_vector_tiene_una_columna_por_caracteristica():
+    assert FE.get_features_nuevas('hola').shape == (len(NEW_FEATURE_NAMES),)
 
 
 # --- emoji_pol ---------------------------------------------------------------------------
@@ -68,3 +68,31 @@ def test_lex_pol_neg_la_negacion_invierte_el_signo():
     positivo = FE.get_features_nuevas('es bueno')[4]
     negado = FE.get_features_nuevas('no es bueno')[4]
     assert positivo > 0 and negado == pytest.approx(-positivo)
+
+
+# --- Caracteristicas de Zuly Gonzalez ------------------------------------------------------
+def test_doubt_count_con_tweet_real_del_corpus():
+    assert features(768228346232729603)['doubt_count'] >= 1
+
+
+def test_regionalism_count_con_tweet_real_del_corpus():
+    assert features(768221021300264964)['regionalism_count'] >= 1
+
+
+def test_intensifier_count_con_tweet_real_del_corpus():
+    assert features(768213876278165504)['intensifier_count'] >= 1
+
+
+# --- Caracteristicas de Daniel Contreras ---------------------------------------------------
+def test_social_pos_con_tweet_real_del_corpus():
+    # "Gracias por los ánimos! He dormido un poco más..." -> 'gracias' y 'ánimos'
+    assert features(768016038126620672)['social_pos'] == 2
+
+
+def test_groserias_con_tweet_real_del_corpus():
+    # "...he notado como el puto hueso se movía" -> 'puto'
+    assert features(768057277865717761)['groserias'] == 1
+
+
+def test_groserias_sin_tildes_ni_mayusculas():
+    assert FE.get_features_nuevas('Qué ASCO, imbécil')[NEW_FEATURE_NAMES.index('groserias')] == 2

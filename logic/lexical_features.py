@@ -58,7 +58,34 @@ lexical_es = {'first_person_singular': ['yo', 'mio', 'mi'],
               'laugh': ['xd', 'lol', 'lmao', 'jsjs', 'jsjsjs', '🤣'],
               # lex_pol_neg: marcas que invierten la polaridad y conjunciones que cierran su alcance
               'negation': ['no', 'nunca', 'jamás', 'jamas', 'tampoco', 'ni', 'nada', 'nadie', 'sin'],
-              'adversative': ['pero', 'aunque', 'sino']}
+              'adversative': ['pero', 'aunque', 'sino'],
+              # --- Caracteristicas nuevas (Zuly Gonzalez) ---
+              'doubt_phrases': ['no se', 'no sé', 'puede que', 'creo que', 'tal vez', 'quizas', 'quizás',
+                                'a lo mejor', 'no estoy seguro', 'no estroy seguro', 'no estoy segura',
+                                'me parece que', 'me da la impresion', 'me da la impresión', 'quizá',
+                                'no tengo claro', 'no lo tengo claro', 'no estoy convencido', 'no estoy convencida',
+                                'podria ser', 'podría ser', 'tengo dudas', 'no lo se', 'no lo sé',
+                                'si no me equivoco', 'igual', 'de pronto', 'en una de esas',
+                                'es posible que', 'puede ser que', 'probablemente', 'seguramente no'],
+              'regionalisms': ['sumercé', 'sumerce', 'parce', 'parcero', 'parcera', 'bacano', 'berraco', 'chévere',
+                               'chevere', 'vale', 'tio', 'tía', 'tia', 'guay', 'chido', 'pana', 'manito',
+                               'wey', 'güey', 'guey', 'órale', 'orale', 'vaina', 'chamba', 'bacán', 'bacan',
+                               'mae', 'pibe', 'piba', 'boludo', 'boluda', 'che', 'copado', 'copada',
+                               'currar', 'curro', 'anda ya', 'mola', 'chaval', 'chavala', 'de una', 'de una vez'],
+              'intensifiers': ['super', 'súper', 'muy', 're', 'mega', 'hiper', 'demasiado', 'bien',
+                               'bastante', 'sumamente', 'altamente', 'tan', 'muchisimo', 'muchísimo',
+                               'full', 'ultra', 'extra', 'remuy', 'requete', 'harto', 'bien bien',
+                               'super super', 'muy muy'],
+              # --- Caracteristicas nuevas (Daniel Contreras) ---
+              # social_pos: agradecimiento, felicitacion y despedida afectuosa, marcas de tweets positivos
+              'social_pos': ['gracias', 'graciass', 'felicidades', 'felicitaciones', 'enhorabuena', 'cumpleanos',
+                             'cumple', 'bienvenido', 'bienvenida', 'bienvenidos', 'besos', 'besitos', 'beso',
+                             'abrazo', 'abrazos', 'saludos', 'suerte', 'animo', 'animos', 'disfruta', 'disfrutad'],
+              # groserias: insultos y tacos del registro coloquial, marca de alta intensidad casi siempre negativa
+              'groserias': ['mierda', 'puta', 'puto', 'putas', 'putos', 'joder', 'jodido', 'jodida', 'putada',
+                            'cono', 'hostia', 'hostias', 'cabron', 'cabrona', 'gilipollas', 'idiota', 'idiotas',
+                            'imbecil', 'estupido', 'estupida', 'subnormal', 'capullo', 'pendejo', 'maldito',
+                            'maldita', 'carajo', 'asco', 'asqueroso', 'asquerosa']}
 
 lexical_en = {'first_person_singular': ['i', 'me', 'my', 'mine', 'myself'],
               'second_person_singular': ['you', 'your', 'yours', 'yourself'],
