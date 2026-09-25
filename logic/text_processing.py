@@ -94,7 +94,6 @@ class TextProcessing(object):
             text_out = re.sub("@([A-Za-z0-9_]{1,40})", '[MENTION]', text_out)
             text_out = re.sub("#([A-Za-z0-9_]{1,40})", '[HASTAG]', text_out)
             text_out = TextProcessing.remove_patterns(text_out)
-            # text_out = TextAnalysis.lemmatization(text_out) if lemmatizer else text_out
             text_out = TextProcessing.stopwords(text_out) if stopwords else text_out
             text_out = re.sub(r'\s+', ' ', text_out).strip()
             text_out = text_out.rstrip()
