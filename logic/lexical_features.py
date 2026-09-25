@@ -61,7 +61,7 @@ lexical_es = {'first_person_singular': ['yo', 'mio', 'mi'],
               'adversative': ['pero', 'aunque', 'sino']}
 
 
-           # --- Caracteristicas nuevas (aporte Zuly González) ---
+           # --- Caracteristicas nuevas (aporte Zuly González) --- 
 
               # Expresiones de duda o incertidumbre
               'doubt_expression': [
