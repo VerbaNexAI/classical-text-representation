@@ -58,7 +58,40 @@ lexical_es = {'first_person_singular': ['yo', 'mio', 'mi'],
               'laugh': ['xd', 'lol', 'lmao', 'jsjs', 'jsjsjs', '🤣'],
               # lex_pol_neg: marcas que invierten la polaridad y conjunciones que cierran su alcance
               'negation': ['no', 'nunca', 'jamás', 'jamas', 'tampoco', 'ni', 'nada', 'nadie', 'sin'],
-              'adversative': ['pero', 'aunque', 'sino']}
+              'adversative': ['pero', 'aunque', 'sino'],
+
+              # reaction_words: vocabulario de reacción espontánea(Fabian Rincon- Jhon Rodriguez)
+              'reaction_words': [
+                  'wow', 'increíble', 'brutal', 'impresionante',
+                  'sorprendente', 'impactante'
+              ],
+              # support_words: vocabulario de apoyo o ánimo(Fabian Rincon- Jhon Rodriguez)
+              'support_words': [
+                  'apoyo', 'respaldo', 'fuerza', 'ánimo',
+                  'adelante', 'vamos'
+              ],
+              # apology_words Vocabulario utilizado para expresar disculpas o arrepentimiento(Fabian Rincon- Jhon Rodriguez)
+              'apology_words': [
+                    'perdón', 'disculpa',
+                    'disculpas', 'perdóname'
+                ],
+
+              # recommendation_words: Vocabulario utilizado para recomendar algo a otras personas(Fabian Rincon- Jhon Rodriguez)
+              'recommendation_words': [
+                    'recomiendo', 'recomendado',
+                    'sugiero', 'aconsejo'
+                ],
+              # preference_words: vocabulario de preferencias personales(Fabian Rincon- Jhon Rodriguez)
+              'preference_words': [
+                  'prefiero', 'elegiría', 'favorito',
+                  'favorita', 'preferido', 'preferida'
+              ],
+              # experience_words: vocabulario asociado a experiencias personales(Fabian Rincon- Jhon Rodriguez)
+              'experience_words': [
+                  'probé', 'viví', 'experimenté',
+                  'conocí', 'utilicé', 'visité'
+              ]
+              }
 
 lexical_en = {'first_person_singular': ['i', 'me', 'my', 'mine', 'myself'],
               'second_person_singular': ['you', 'your', 'yours', 'yourself'],

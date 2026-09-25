@@ -140,6 +140,31 @@ class FeatureExtraction(BaseEstimator, TransformerMixin):
                 vector['who_female'] = sum(1 for word in tokens_text if word in lexical['who_female'])
                 vector['who_female'] = float(vector['who_female'])
 
+                # Nuevas características léxicas
+                vector['reaction_words'] = float(
+                    sum(1 for word in tokens_text if word.lower() in lexical['reaction_words'])
+                )
+
+                vector['support_words'] = float(
+                    sum(1 for word in tokens_text if word.lower() in lexical['support_words'])
+                )
+
+                vector['apology_words'] = float(
+                    sum(1 for word in tokens_text if word.lower() in lexical['apology_words'])
+                )
+
+                vector['recommendation_words'] = float(
+                    sum(1 for word in tokens_text if word.lower() in lexical['recommendation_words'])
+                )
+
+                vector['preference_words'] = float(
+                    sum(1 for word in tokens_text if word.lower() in lexical['preference_words'])
+                )
+
+                vector['experience_words'] = float(
+                    sum(1 for word in tokens_text if word.lower() in lexical['experience_words'])
+                )
+
                 result = np.array(list(vector.values()))
         except Exception as e:
             Utils.standard_error(sys.exc_info())
